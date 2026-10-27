@@ -4,6 +4,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 
+import { Button } from './components/ui/button'
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -17,9 +19,7 @@ function App() {
         </div>
         <div>
           <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+          <Button>Hello shadcn</Button>
         </div>
         <button
           type="button"
