@@ -1,14 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import RegisterForm from "../components/RegisterForm";
 import { registerUser } from "../api";
+import { useNavigate } from "react-router";
+import type { Token } from "../types";
+import { setToken } from "../tokenStorage";
 
 export default function RegisterPage() {
+  let navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit() {
-    registerUser({ email: email, password: password });
+  async function handleSubmit() {
+    try {
+      const token: Token = await (
+        await registerUser({ email: email, password: password })
+      )?.json();
+      setToken(token)
+      navigate("/");
+    } catch (error) {
+      console.log("ERROR: " + error);
+    }
   }
 
   return (
