@@ -1,4 +1,6 @@
+import { HttpErrorHandler } from "@/lib/http-error-handler";
 import { messages } from "@/utils/messages";
+import { setAlert } from "../alert/components/Alert";
 
 export async function getRoot() {
   const response = await fetch("http://localhost:8000/");
@@ -18,5 +20,7 @@ export async function registerUser(body: any) {
   });
 
   if (res.status == 200) return res;
-  else throw new Error(messages.ERROR_API_REGISTER);
+  else {
+    HttpErrorHandler(res);
+  }
 }

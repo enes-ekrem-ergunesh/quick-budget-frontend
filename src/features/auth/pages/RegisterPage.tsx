@@ -5,6 +5,7 @@ import { registerUser } from "../api";
 import { useNavigate } from "react-router";
 import type { Token } from "../types";
 import { setToken } from "../tokenStorage";
+import { setAlert } from "@/features/alert/components/Alert";
 
 export default function RegisterPage() {
   let navigate = useNavigate();
@@ -16,10 +17,13 @@ export default function RegisterPage() {
       const token: Token = await (
         await registerUser({ email: email, password: password })
       )?.json();
-      setToken(token)
-      navigate("/");
+      if (token) {
+        setToken(token);
+        navigate("/");
+      }
     } catch (error) {
-      console.log("ERROR: " + error);
+      const type_error = error as TypeError;
+      setAlert("Registration Error", type_error.message, "danger");
     }
   }
 
