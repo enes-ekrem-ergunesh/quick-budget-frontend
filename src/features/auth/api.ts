@@ -1,17 +1,10 @@
 import { HttpErrorHandler } from "@/lib/http-error-handler";
-import { messages } from "@/utils/messages";
-import { setAlert } from "../alert/components/Alert";
+import type { LoginRequest } from "./types";
 
-export async function getRoot() {
-  const response = await fetch("http://localhost:8000/");
-  if (!response.ok) {
-    throw new Error(messages.ERROR_API_GET_ROOT);
-  }
-  return response.json();
-}
+const API_URL: string = import.meta.env.VITE_API_URL;
 
-export async function registerUser(body: any) {
-  const res = await fetch("http://localhost:8000/auth/register", {
+export async function apiRegister(body: any) {
+  const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,4 +16,16 @@ export async function registerUser(body: any) {
   else {
     HttpErrorHandler(res);
   }
+}
+
+export async function apiLogin(loginRequest: LoginRequest) {
+  const res = await fetch("http://localhost:8000/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ username: loginRequest.username, password: loginRequest.password }),
+  });
+  if (res.status == 200) return res;
+  else HttpErrorHandler(res);
 }

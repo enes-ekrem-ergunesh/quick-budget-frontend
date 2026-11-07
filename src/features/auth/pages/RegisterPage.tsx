@@ -1,21 +1,20 @@
-import { useState } from "react";
-
-import RegisterForm from "../components/RegisterForm";
-import { registerUser } from "../api";
 import { useNavigate } from "react-router";
-import type { Token } from "../types";
+import { apiRegister } from "../api";
 import { setToken } from "../tokenStorage";
+import RegisterForm from "../components/RegisterForm";
 import { setAlert } from "@/features/alert/components/Alert";
+
+import type { Token } from "../types";
 
 export default function RegisterPage() {
   let navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  async function handleSubmit() {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.target);
     try {
       const token: Token = await (
-        await registerUser({ email: email, password: password })
+        await apiRegister({ email: formData.get('email') as string, password: formData.get('password') as string })
       )?.json();
       if (token) {
         setToken(token);
@@ -31,10 +30,6 @@ export default function RegisterPage() {
     <>
       <div className="flex h-screen justify-center items-center">
         <RegisterForm
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
           handleSubmit={handleSubmit}
         />
       </div>

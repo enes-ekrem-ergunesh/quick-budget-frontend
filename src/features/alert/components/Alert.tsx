@@ -65,7 +65,7 @@ export default function AlertComponent() {
   return (
     <>
       <div
-        className={`absolute right-2 bottom-2 transition-opacity opacity-${visible ? "100" : "0"}`}
+        className={`absolute right-2 bottom-2 transition-opacity ${visible ? "opacity-100" : "opacity-0"}`}
       >
         <Alert
           variant={alert.icon == "danger" ? "destructive" : "default"}
