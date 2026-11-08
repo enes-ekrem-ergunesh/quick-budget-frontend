@@ -8,6 +8,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator"
+import { Link } from "react-router";
 
 export default function LoginForm({ handleSubmit }: { handleSubmit: any }) {
   return (
@@ -44,6 +46,8 @@ export default function LoginForm({ handleSubmit }: { handleSubmit: any }) {
           <Button type="submit" form="login-form" className="w-full">
             Submit
           </Button>
+          <Separator />
+          <p>New here? <Link to="/register" className="hover:underline font-medium">Create an account</Link></p>          
         </CardFooter>
       </Card>
     </>

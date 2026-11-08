@@ -1,7 +1,8 @@
 import { setAlert } from "@/features/alert/components/Alert";
-import type { ApiResponseJson } from "./types";
+import type { ApiResponseJson } from "../lib/types";
 
 export async function HttpErrorHandler(
+  
   res: Response,
   source: string | null = null,
   message: string | null = null,
@@ -27,6 +28,9 @@ export async function HttpErrorHandler(
   } else if (res_status < 400) {
   } else if (res_status < 500) {
     switch (res_status) {
+      case 401:
+        setAlert("Unauthorized", description, "danger", ttl);
+        return
       case 409:
         setAlert(title_source + "Unauthorized", description, "danger", ttl);
         return;
