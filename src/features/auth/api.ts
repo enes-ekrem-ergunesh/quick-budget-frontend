@@ -20,7 +20,7 @@ export async function apiRegister(body: any) {
 }
 
 export async function apiLogin(loginRequest: LoginRequest) {
-  const res = await fetch("http://localhost:8000/auth/login", {
+  const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -36,11 +36,10 @@ export async function apiLogin(loginRequest: LoginRequest) {
 
 export async function apiLogout() {
   const access_token = getToken()
-  const res = await fetch("http://localhost:8000/auth/logout", {
+  const res = await fetch(`${API_URL}/auth/logout`, {
     method: "POST",
     headers: {
-      // "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: access_token,
+      "Authorization": access_token,
     },
   });
   if (res.status == 200) return res;

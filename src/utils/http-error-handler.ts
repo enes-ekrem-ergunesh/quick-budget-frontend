@@ -2,7 +2,6 @@ import { setAlert } from "@/features/alert/components/Alert";
 import type { ApiResponseJson } from "../lib/types";
 
 export async function HttpErrorHandler(
-  
   res: Response,
   source: string | null = null,
   message: string | null = null,
@@ -30,6 +29,7 @@ export async function HttpErrorHandler(
     switch (res_status) {
       case 401:
         setAlert("Unauthorized", description, "danger", ttl);
+        window.location.href = "/login"
         return
       case 409:
         setAlert(title_source + "Unauthorized", description, "danger", ttl);
