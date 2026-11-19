@@ -62,3 +62,18 @@ export async function apiPatchCategory(body: any) {
     HttpErrorHandler(res)
   };
 }
+
+
+export async function apiDeleteCategory(categoryId: string) {
+  const access_token = getToken()
+  const res = await fetch(`${API_URL}/category/${categoryId}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": access_token,
+    }
+  });
+  if (res.status == 200) return res;
+  else {
+    HttpErrorHandler(res)
+  };
+}

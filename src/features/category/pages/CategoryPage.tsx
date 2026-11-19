@@ -4,6 +4,7 @@ import { NewCategoryForm } from "../components/NewCategoryForm";
 import type { CategoryModel, PostCategory } from "../types";
 import { CategoryList } from "../components/CategoryList";
 import { useState } from "react";
+import { NavLink } from "react-router";
 
 export default function CategoryPage() {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
@@ -18,20 +19,21 @@ export default function CategoryPage() {
         await apiPostCategory(post_category)
       )?.json();
       if (category) {
-        setCategories([...categories, category])
-        return true
+        setCategories([...categories, category]);
+        return true;
       }
     } catch (error) {
       const type_error = error as TypeError;
       setAlert("New Category Error", type_error.message, "danger");
-      return false
+      return false;
     }
   }
 
   return (
     <>
+      <NavLink className="absolute" to="/">{'< back'}</NavLink>
       <h1>Categories</h1>
-      <div className="max-w-sm mx-auto">
+      <div className="mx-3">
         <NewCategoryForm handleSubmit={handleNewCategorySubmit} />
         <br />
         <CategoryList categories={categories} setCategories={setCategories} />

@@ -1,13 +1,15 @@
 import { setAlert } from "@/features/alert/components/Alert";
-import { apiGetCategoryById, apiPatchCategory } from "../api";
+import { apiDeleteCategory, apiGetCategoryById, apiPatchCategory } from "../api";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import type { CategoryModel, PatchCategory } from "../types";
 import { PatchCategoryForm } from "../components/PatchCategoryForm";
+import { Button } from "@/components/ui/button";
+import type { ApiResponseJson } from "@/lib/types";
 
 export default function CategoryDetailsPage() {
   const categoryId = useParams().categoryId;
-  const [putCategory, setPutCategory] = useState<PatchCategory | null>(null);
+  const [patchCategory, setPatchCategory] = useState<PatchCategory | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ export default function CategoryDetailsPage() {
         await apiGetCategoryById(categoryId)
       )?.json();
       if (api_category) {
-        setPutCategory(api_category);
+        setPatchCategory(api_category);
       }
     } catch (error) {
       const type_error = error as TypeError;
@@ -31,10 +33,10 @@ export default function CategoryDetailsPage() {
     }
   }
 
-  async function handleEditCategorySubmit(formData: FormData) {
-    if (putCategory === null || putCategory.id === null) {
+  async function handlePatchCategorySubmit(formData: FormData) {
+    if (patchCategory === null || patchCategory.id === null) {
       setAlert(
-        "Edit Category Error",
+        "Patch Category Error",
         "Category ID is not found, please refresh the page",
         "danger",
         5000,
@@ -42,7 +44,7 @@ export default function CategoryDetailsPage() {
       return;
     }
     const form_category: PatchCategory = {
-      id: putCategory.id,
+      id: patchCategory.id,
       title: formData.get("patch-category-title") as string,
       emoji: formData.get("patch-category-emoji") as string,
     }
@@ -51,7 +53,31 @@ export default function CategoryDetailsPage() {
         await apiPatchCategory(form_category)
       )?.json();
       if (category) {
-        setPutCategory(putCategory)
+        setPatchCategory(patchCategory)
+        navigate("/categories")
+      }
+    } catch (error) {
+      const type_error = error as TypeError;
+      setAlert("Patch Category Error", type_error.message, "danger");
+    }
+  }
+
+  async function handleDeleteButtonClick(){
+    if (patchCategory === null || patchCategory.id === null) {
+      setAlert(
+        "Delete Category Error",
+        "Category ID is not found, please refresh the page",
+        "danger",
+        5000,
+      );
+      return;
+    }
+    try {
+      const api_response: ApiResponseJson = await (
+        await apiDeleteCategory(patchCategory.id)
+      )?.json();
+      if (api_response && typeof(api_response.detail) == "string") {
+        setAlert("Delete Category", api_response.detail, "success")
         navigate("/categories")
       }
     } catch (error) {
@@ -61,17 +87,18 @@ export default function CategoryDetailsPage() {
   }
 
   if (loading) return <p>loading...</p>;
-  if (putCategory === null) return <p>Category can't be loaded</p>;
+  if (patchCategory === null) return <p>Category can't be loaded</p>;
 
   return (
     <>
       <h1>Category Details</h1>
       <div className="max-w-sm mx-auto">
         <PatchCategoryForm
-          handleSubmit={handleEditCategorySubmit}
-          emoji={putCategory.emoji}
-          title={putCategory.title}
+          handleSubmit={handlePatchCategorySubmit}
+          emoji={patchCategory.emoji}
+          title={patchCategory.title}
         />
+        <Button variant="destructive" className="w-full" onClick={handleDeleteButtonClick}>Delete</Button>
       </div>
     </>
   );

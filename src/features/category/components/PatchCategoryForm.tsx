@@ -36,7 +36,8 @@ export function PatchCategoryForm({
           <FieldLabel htmlFor="patch-category-title">Title</FieldLabel>
           <Input id="patch-category-title" name="patch-category-title" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} />
         </Field>
-        <Button type="submit">Save</Button>
+        <br/>
+        <Button className="w-full" type="submit">Save</Button>
       </form>
     </>
   );
