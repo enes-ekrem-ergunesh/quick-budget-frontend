@@ -9,6 +9,7 @@ import CategoryDetailsPage from "@/features/category/pages/CategoryDetailsPage";
 import EntryPage from "@/features/entry/pages/EntryPage";
 import NewEntryPage from "@/features/entry/pages/NewEntryPage";
 import EntryDetailsPage from "@/features/entry/pages/EntryDetailsPage";
+import AccountPage from "@/features/account/pages/AccountPage";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/entries" element={<EntryPage />} />
           <Route path="/entry/:entryId" element={<EntryDetailsPage />} />
           <Route path="/new-entry" element={<NewEntryPage />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route path="/test" element={<TestPage />} />
         </Routes>
       </BrowserRouter>

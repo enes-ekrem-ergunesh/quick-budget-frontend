@@ -27,7 +27,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="flex h-screen justify-center items-center">
+      <div className="flex h-screen justify-center items-center mx-3">
         <LoginForm
           handleSubmit={handleSubmit}
         />
